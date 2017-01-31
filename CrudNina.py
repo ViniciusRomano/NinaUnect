@@ -1,6 +1,9 @@
 import pyrebase
 import datetime
+<<<<<<< HEAD
 from timeNow import timeNow
+=======
+>>>>>>> 6dca268a5332524b443a44e751513cbfd006679f
 
 config = {
         "apiKey": "AIzaSyA3CiBvheT0KHWed8u-p9PSe7NkdUdZOuU",
@@ -21,8 +24,12 @@ class CrudNina(object):
 
     def push(self,ra,state):
         data = {}
+<<<<<<< HEAD
         data['LocalTime']=str(datetime.datetime.now())
         data['OnlineTime'] = str(timeNow().getTime())
+=======
+        data['Time']=str(datetime.datetime.now())
+>>>>>>> 6dca268a5332524b443a44e751513cbfd006679f
         data['State']=state
 
         self.db.child(str(ra)).push(data, self.user['idToken'])
