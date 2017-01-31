@@ -58,6 +58,7 @@ class Ui_Dialog(object):
         self.lineEdit.setGeometry(QtCore.QRect(50, 100, 113, 25))
         self.lineEdit.setInputMask(_fromUtf8(""))
         self.lineEdit.setText(_fromUtf8(""))
+        self.lineEdit.setValidator(QIntValidator())
         self.lineEdit.setMaxLength(7)
         self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
