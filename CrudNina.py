@@ -17,7 +17,7 @@ class CrudNina(object):
         #authenticate a user
         firebase = pyrebase.initialize_app(config)
         auth = firebase.auth()
-        self.user = auth.sign_in_with_email_and_password("vidromano@hotmail.com", "eumeamo10")
+        self.user = auth.sign_in_with_email_and_password("vidromano@hotmail.com", "senha123")
         self.db = firebase.database()
 
     def push(self,ra,state):

@@ -92,7 +92,7 @@ class Ui_Dialog(object):
         self.pushButton = QtGui.QPushButton(Dialog)
         self.pushButton.setGeometry(QtCore.QRect(160, 150, 85, 27))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
-
+        self.Dialog.setTabOrder(self.lineEdit.focusProxy(), self.radioButton_2.focusProxy())
         self.retranslateUi(Dialog)
         QtCore.QObject.connect(self.pushButton, QtCore.SIGNAL(_fromUtf8("clicked()")), self.insert)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
