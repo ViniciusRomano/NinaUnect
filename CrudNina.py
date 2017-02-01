@@ -27,3 +27,6 @@ class CrudNina(object):
         data['State']=state
 
         self.db.child(str(ra)).push(data, self.user['idToken'])
+
+    def getAll(self):
+        return self.db.get(self.user['idToken']).val()
