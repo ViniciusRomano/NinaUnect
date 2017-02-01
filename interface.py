@@ -10,6 +10,8 @@ from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from CrudNina import CrudNina
+from requests.exceptions import HTTPError
+from requests.exceptions import ConnectionError
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -96,10 +98,15 @@ class Ui_Dialog(object):
         self.retranslateUi(Dialog)
         QtCore.QObject.connect(self.pushButton, QtCore.SIGNAL(_fromUtf8("clicked()")), self.insert)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-
+        Dialog.setTabOrder(self.lineEdit, self.radioButton)
+        Dialog.setTabOrder(self.radioButton, self.radioButton_2)
+        Dialog.setTabOrder(self.radioButton_2, self.pushButton)
+        
         try:
             self.obj = CrudNina()
-        except:
+        except HTTPError as e:
+            QMessageBox.warning(self.Dialog, "Error", "Erro na autenticação com o banco de dados.")
+        except ConnectionError:
             QMessageBox.warning(self.Dialog, "Error", "Erro na conexão. Certifique que o computador está conectado com a internet.")
 
     def insert(self):
@@ -123,8 +130,10 @@ class Ui_Dialog(object):
             try:
                 self.obj.push(ra,state)
                 QMessageBox.information(self.Dialog, "Success", "Envio realizado com sucesso")
-            except:
+            except ConnectionError:
                 QMessageBox.warning(self.Dialog, "Error", "Erro no envio de dados. Certifique que o computador está conectado com a internet.")
+            except Exception as e:
+                QMessageBox.warning(self.Dialog, "Error", str(e))
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Nina - Unect", None))

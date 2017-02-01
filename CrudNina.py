@@ -22,8 +22,8 @@ class CrudNina(object):
 
     def push(self,ra,state):
         data = {}
-        data['LocalTime']=str(datetime.datetime.now())
-        data['OnlineTime'] = str(timeNow().getTime())
+        data['LocalTime']=str(datetime.datetime.now().strftime(" %d %b %Y %H:%M:%S ")) #format time : ' 01 Feb 2017 13:52:26'
+        data['OnlineTime'] = str(timeNow().getTime().split('-')[0])
         data['State']=state
 
         self.db.child(str(ra)).push(data, self.user['idToken'])
