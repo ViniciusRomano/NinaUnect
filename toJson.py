@@ -1,9 +1,11 @@
 import json
-from CrudNina import CrudNina
+import datetime
 
+class toJson(object):
+    """Class for json file manipulation"""
 
-crud = CrudNina()
-somedict = crud.getAll()
-
-with open('result.json', 'w') as fp:
-    json.dump(somedict, fp)
+    def create(self, dict, name):
+        dict['CreatedTimeThisJson'] = str(datetime.datetime.now().strftime(
+            " %d %b %Y %H:%M:%S "))  # format time : ' 01 Feb 2017 13:52:26'
+        with open(name + '.json', 'w') as fp:
+            json.dump(dict, fp)
