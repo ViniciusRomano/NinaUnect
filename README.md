@@ -3,7 +3,7 @@ A software for presence management.
 
 ## Processo de Desenvolvimento
 ``` bash
-# Clone o repositório git@github.com:conteumconto/dashboard.git
+# Clone o repositório
 git clone https://github.com/ViniciusRomano/NinaUnect
 
 # Dependências
