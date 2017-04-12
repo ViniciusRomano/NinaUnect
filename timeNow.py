@@ -11,5 +11,5 @@ class timeNow(object):
         self.json = r.json()
 
     def getTime(self):
-        # retorna no json apenas o horário
+        # retorna no json apenas o horário atual
         return self.json['fulldate'].split(',')[1].split('-')[0]
