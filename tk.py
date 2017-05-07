@@ -6,19 +6,25 @@ except ImportError:  # Python 3
     from tkinter import *
     from tkinter.ttk import *
 
-from timeNow import timeNow  # classe para retornar o horário online
+from timeNow import timeNow  # classe para retornar o horário e data online
 import tkMessageBox
 import requests
-from requests.exceptions import ConnectionError
+from bd_nina import *
+from Permanencia import *
 
+from requests.exceptions import ConnectionError
 
 class App(Frame):
 
+
     def __init__(self, parent):
         Frame.__init__(self, parent)
+        self.bd = DB()
+        self.bd.createTableFuncionario()
+        self.bd.createTablePermanencia()
         self.CreateUI()
         self.grid(sticky=(N, S, W, E))
-        self.todas_permanencias = []  # [RA,horarioEntrada,horarioSaida,Status,Falta]
+        self.todas_permanencias = [] # lista de alunos
         if(self.internet_verify()):
             self.msg_error()
             Frame.quit()
@@ -26,6 +32,10 @@ class App(Frame):
     def msg_error(self):
         tkMessageBox.showerror(
             "Connection Error", "Sem acesso a internet. Por favor, verifique sua conexão.")
+
+    def msg_errorRa(self):
+        tkMessageBox.showerror(
+            "RA inválido", "RA incorreto ou não cadastrado no sistema")
 
     def msg_insert(self):
         tkMessageBox.showinfo(
@@ -43,8 +53,7 @@ class App(Frame):
     def reload(self):
         self.treeview.delete(*self.treeview.get_children())  # limpa a tabela
         for perm in self.todas_permanencias:  # insere as informacoes que estao na lista
-            self.treeview.insert('', 'end', text=perm[
-                                 0], values=(perm[1], perm[2], perm[3]))
+            self.treeview.insert('', 'end', text=perm.ra, values=(perm.hEntrada, perm.hSaida, perm.status))
 
     def insert(self, event=None):
         # procura pra ver se o funcionario esta na sala.
@@ -52,30 +61,37 @@ class App(Frame):
         found = False
         for perm in self.todas_permanencias:
             number_list = number_list + 1
-            if (perm[0] == self.e.get()) and (perm[2] == ''):
+            if (perm.ra == self.e.get()) and (perm.hSaida == ''):
                 found = True
-            if(found):
                 break
 
         if(found):
             # modificando status e horario de saida
             try:
-                self.todas_permanencias[number_list][
-                    2] = timeNow().getTime().split(' ')[4]
-                self.todas_permanencias[number_list][3] = 'OK'
+                self.todas_permanencias[number_list].hSaida = timeNow().getTime()
+                self.todas_permanencias[number_list].status = 'OK'
+
+                DB.insertPermanencia(self.bd,self.todas_permanencias[number_list])
+
                 self.msg_insert()
                 self.reload()
+
             except ConnectionError as err:
                 self.msg_error()
         else:
             # criando uma permanência
             try:
-                self.todas_permanencias.append(
-                    [self.e.get(), timeNow().getTime().split(' ')[4], '', 'Pendente'])
+                p = Permanencia(self.e.get(), timeNow().getDate(), timeNow().getTime(), '', 'Pendente', '')
+                if self.bd.selectFuncionario(p.ra) == None:
+                    raise ValueError('no RA')
+                self.todas_permanencias.append(p)
                 self.msg_insert()
                 self.reload()
-            except ConnectionError as err:
-                self.msg_error()
+            except (ConnectionError, ValueError) as err:
+                if 'no RA' in err:
+                    self.msg_errorRa()
+                else:
+                    self.msg_error()
 
     def CreateUI(self):
         tv = Treeview(self, height=20)

@@ -1,0 +1,22 @@
+MODIFICAÇOES REALIZADAS EM RELAÇAO A VERSAO ANTERIOR:
+
+- Adição de classes
+    1. classes entidades Funcionario e Permanencia
+    2. classe manutençãoBD somente pra se caso for necessário mecher diretamente no banco sem a interface
+
+- bd_nina:
+    1. métodos de inserção de Funcionario e Permanencia modificados para receber objeto Funcionario ou Permanencia
+    2. modificação da conversão string %s para {}
+    3. adição de métodos para selecionar todos os funcionarios ou permanencias
+    4. adição de métodos para selecionar um único funcionario ou permanencia pela string de busca (RA)
+    5 Alteração das tabelas do banco de dados
+       5.1. adição de constraints primary key para a tabela FUNCIONARIO (ra), caso precise ser alterado
+       5.2. adição de constraints primary key e foreign key para PERMANENCIA (id,ra)
+
+- timeNow:
+    1. Adição de método para resgatar a data atual
+
+- tk:
+    1. modificação do gerenciamento das lista de permanencias para dicionario por meio das classes permanencia e funcionário
+    2. Adição de verificação da existência de RA no banco antes de inserir
+
